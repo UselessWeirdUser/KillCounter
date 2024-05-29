@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.UUID;
 
 public class PlayerStatsDatabase {
     private Connection connection;
@@ -35,9 +36,9 @@ public class PlayerStatsDatabase {
         }
     }
 
-    public PlayerStatsModel readRecord(Player p) throws SQLException { // TODO: perform async actions
+    public PlayerStatsModel readRecord(UUID uuid) throws SQLException { // TODO: perform async actions
         try (PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM stats WHERE uuid = ?")) {
-            statement.setString(1, p.getUniqueId().toString());
+            statement.setString(1, uuid.toString());
             ResultSet resultSet = statement.executeQuery();
             PlayerStatsModel stats;
             if (resultSet.next()) {
@@ -48,12 +49,12 @@ public class PlayerStatsDatabase {
         }
 
         try (PreparedStatement statement = getConnection().prepareStatement("INSERT INTO stats(uuid, kills, deaths, killstreak) VALUES (?, ?, ?, ?)")) {
-            statement.setString(1, p.getUniqueId().toString());
+            statement.setString(1, uuid.toString());
             statement.setInt(2, 0);
             statement.setInt(3, 0);
             statement.setInt(4, 0);
             statement.executeUpdate();
-            return new PlayerStatsModel(p.getUniqueId().toString(), 0, 0, 0);
+            return new PlayerStatsModel(uuid.toString(), 0, 0, 0);
         }
     }
 }
