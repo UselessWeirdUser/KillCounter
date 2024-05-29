@@ -37,12 +37,14 @@ public class PlayerStatsListener implements Listener {
         ps.setKillStreak(0);
         ps.setDeaths(ps.getDeaths() + 1);
         mem.setStats(ps);
+        // test: System.out.println("player " + player.getName() + " has now a total of " + ps.getDeaths() + " deaths.");
 
         if (killer != null) {
             PlayerStatsModel ks = mem.getStats(killer);
             ks.setKillStreak(ks.getKillStreak() + 1);
             ks.setKills(ks.getKills() + 1);
             mem.setStats(ks);
+            // test: System.out.println("player " + killer.getName() + " has now " + ks.getKills() + " kills, with a killstreak of " + ks.getKillStreak() + ".");
         }
     }
 
