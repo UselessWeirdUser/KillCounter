@@ -24,7 +24,7 @@ public class PlayerStatsDatabase {
         return this.connection;
     }
 
-    public void editRecord(PlayerStatsModel r) throws SQLException { // TODO: perform async actions
+    public void editRecord(PlayerStatsModel r) throws SQLException {
         try (PreparedStatement statement = getConnection().prepareStatement("UPDATE stats SET kills = ?, deaths = ?, killstreak = ? WHERE uuid = ?")) {
             statement.setInt(1, r.getKills());
             statement.setInt(2, r.getDeaths());
@@ -34,7 +34,7 @@ public class PlayerStatsDatabase {
         }
     }
 
-    public PlayerStatsModel readRecord(UUID uuid) throws SQLException { // TODO: perform async actions
+    public PlayerStatsModel readRecord(UUID uuid) throws SQLException {
         try (PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM stats WHERE uuid = ?")) {
             statement.setString(1, uuid.toString());
             ResultSet resultSet = statement.executeQuery();
