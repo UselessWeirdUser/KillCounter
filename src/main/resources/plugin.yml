@@ -4,3 +4,9 @@ main: it.feargames.killcounter.KillCounter
 api-version: '1.19'
 
 softdepend: [PlaceholderAPI]
+
+commands:
+  stats:
+    description: Get your stats (kills, deaths and current kill streak)
+    usage: /stats
+    permission: killcounter.stats
