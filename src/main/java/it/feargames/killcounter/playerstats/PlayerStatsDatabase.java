@@ -1,5 +1,7 @@
 package it.feargames.killcounter.playerstats;
 
+import org.bukkit.configuration.file.FileConfiguration;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,12 +11,18 @@ import java.util.UUID;
 
 public class PlayerStatsDatabase {
     private Connection connection;
+    private final String url;
+    private final String user;
+    private final String password;
+
+    public PlayerStatsDatabase(String host, Integer port, String dbName, String user, String password) {
+        this.url = "jdbc:mysql://" + host + ":" + port + "/" + dbName;
+        this.user = user;
+        this.password = password;
+    }
 
     private Connection getConnection() throws SQLException { // TODO: HikariCP
         if (this.connection == null) {
-            String url = "jdbc:mysql://localhost:3306/database";
-            String user = "root";
-            String password = "password";
             this.connection = DriverManager.getConnection(url, user, password);
             try (PreparedStatement statement = this.connection.prepareStatement("CREATE TABLE IF NOT EXISTS stats (uuid varchar(36) primary key, kills int, deaths int, killstreak int)")) {
                 statement.execute();
