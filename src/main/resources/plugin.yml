@@ -1,7 +1,6 @@
 name: KillCounter
 version: '${version}'
 main: it.feargames.killcounter.KillCounter
-api-version: '1.19'
 
 softdepend: [PlaceholderAPI]
 

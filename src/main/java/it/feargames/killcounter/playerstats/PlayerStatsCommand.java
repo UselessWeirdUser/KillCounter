@@ -19,7 +19,8 @@ public class PlayerStatsCommand implements CommandExecutor {
             return false;
         }
 
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
             PlayerStatsModel stats = mem.getStats(player);
 
             player.sendMessage("Your current kill streak is: " + stats.getKillStreak());
