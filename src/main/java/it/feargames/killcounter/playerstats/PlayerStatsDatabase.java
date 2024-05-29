@@ -1,5 +1,7 @@
 package it.feargames.killcounter.playerstats;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.sql.ResultSet;
 import java.util.UUID;
 
 public class PlayerStatsDatabase {
-    private Connection connection;
+    private HikariDataSource dataSource;
     private final String url;
     private final String user;
     private final String password;
@@ -21,15 +23,23 @@ public class PlayerStatsDatabase {
         this.password = password;
     }
 
-    private Connection getConnection() throws SQLException { // TODO: HikariCP
-        if (this.connection == null) {
-            this.connection = DriverManager.getConnection(url, user, password);
-            try (PreparedStatement statement = this.connection.prepareStatement("CREATE TABLE IF NOT EXISTS stats (uuid varchar(36) primary key, kills int, deaths int, killstreak int)")) {
-                statement.execute();
+    private Connection getConnection() throws SQLException {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(user);
+        config.setPassword(password);
+        config.setMaximumPoolSize(10);
+
+        if (this.dataSource == null) {
+            this.dataSource = new HikariDataSource(config);
+            try (Connection conn = this.dataSource.getConnection()) {
+                try (PreparedStatement statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS stats (uuid varchar(36) primary key, kills int, deaths int, killstreak int)")) {
+                    statement.execute();
+                }
             }
         }
 
-        return this.connection;
+        return this.dataSource.getConnection();
     }
 
     public void editRecord(PlayerStatsModel r) throws SQLException {
@@ -65,6 +75,6 @@ public class PlayerStatsDatabase {
     }
 
     public void closeConnections() throws SQLException {
-        this.connection.close();
+        this.dataSource.close();
     }
 }
