@@ -2,22 +2,23 @@ package it.feargames.killcounter.playerstats;
 
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class PlayerStatsManager {
-    public void insertStats(PlayerStatsModel s) {
-        // TODO: insert stats in memory
-    }
+    private final Map<String, PlayerStatsModel> data = new ConcurrentHashMap<>();
 
     public PlayerStatsModel getStats(Player p) {
-        // TODO: get stats from the memory
-        return null;
+        return data.get(p.getUniqueId().toString());
     }
 
-    public void editStats(PlayerStatsModel s) {
-        // TODO: edit stats in memory
+    public void setStats(PlayerStatsModel s) {
+        data.put(s.getPlayerUUID(), s);
     }
 
     public PlayerStatsModel popStats(Player p) {
-        // TODO: get the stats for player p, then delete them
-        return null;
+        PlayerStatsModel stats = getStats(p);
+        data.remove(p.getUniqueId().toString());
+        return stats;
     }
 }

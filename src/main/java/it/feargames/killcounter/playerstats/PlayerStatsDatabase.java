@@ -1,7 +1,5 @@
 package it.feargames.killcounter.playerstats;
 
-import org.bukkit.entity.Player;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

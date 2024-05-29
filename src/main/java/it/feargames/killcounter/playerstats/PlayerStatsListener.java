@@ -22,7 +22,7 @@ public class PlayerStatsListener implements Listener {
     public void onPlayerJoin(AsyncPlayerPreLoginEvent e) { // TODO: make this async
         try {
             PlayerStatsModel stats = db.readRecord(e.getUniqueId());
-            mem.insertStats(stats);
+            mem.setStats(stats);
         } catch (SQLException exc) {
             exc.printStackTrace();
         }
@@ -36,13 +36,13 @@ public class PlayerStatsListener implements Listener {
         PlayerStatsModel ps = mem.getStats(player);
         ps.setKillStreak(0);
         ps.setDeaths(ps.getDeaths() + 1);
-        mem.editStats(ps);
+        mem.setStats(ps);
 
         if (killer != null) {
             PlayerStatsModel ks = mem.getStats(killer);
             ks.setKillStreak(ks.getKillStreak() + 1);
             ks.setKills(ks.getKills() + 1);
-            mem.editStats(ks);
+            mem.setStats(ks);
         }
     }
 
