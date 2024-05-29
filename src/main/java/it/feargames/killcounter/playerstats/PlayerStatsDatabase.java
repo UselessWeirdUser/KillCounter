@@ -55,4 +55,8 @@ public class PlayerStatsDatabase {
             return new PlayerStatsModel(uuid.toString(), 0, 0, 0);
         }
     }
+
+    public void closeConnections() throws SQLException {
+        this.connection.close();
+    }
 }

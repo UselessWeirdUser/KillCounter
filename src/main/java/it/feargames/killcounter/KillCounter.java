@@ -29,6 +29,7 @@ public final class KillCounter extends JavaPlugin {
             PlayerStatsModel stats = mem.popStats(player);
             try {
                 db.editRecord(stats);
+                db.closeConnections();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
