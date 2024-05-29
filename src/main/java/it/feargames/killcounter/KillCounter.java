@@ -36,14 +36,14 @@ public final class KillCounter extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (Player player : getServer().getOnlinePlayers()) {
-            PlayerStatsModel stats = mem.popStats(player);
-            try {
+        try {
+            for (Player player : getServer().getOnlinePlayers()) {
+                PlayerStatsModel stats = mem.popStats(player);
                 db.editRecord(stats);
-                db.closeConnections();
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+            db.closeConnections();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

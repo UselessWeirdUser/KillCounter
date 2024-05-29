@@ -21,7 +21,7 @@ public class PlayerStatsListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent e) { // TODO: is this completely async?
+    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent e) {
         try {
             PlayerStatsModel stats = db.readRecord(e.getUniqueId());
             mem.setStats(stats);
