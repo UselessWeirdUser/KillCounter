@@ -1,6 +1,7 @@
 package it.feargames.killcounter.playerstats;
 
 import it.feargames.killcounter.KillCounter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +27,7 @@ public class PlayerStatsListener implements Listener {
             PlayerStatsModel stats = db.readRecord(e.getUniqueId());
             mem.setStats(stats);
         } catch (SQLException exc) {
-            exc.printStackTrace();
+            Bukkit.getLogger().warning("Could not load player data.");
         }
     }
 
@@ -55,7 +56,7 @@ public class PlayerStatsListener implements Listener {
             try {
                 db.editRecord(mem.popStats(e.getPlayer()));
             } catch (SQLException exc) {
-                exc.printStackTrace();
+                Bukkit.getLogger().warning("Could not save player data.");
             }
         });
     }

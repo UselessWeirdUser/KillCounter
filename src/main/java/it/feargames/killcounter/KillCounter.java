@@ -22,6 +22,7 @@ public final class KillCounter extends JavaPlugin {
         config.addDefault("database-password", "password");
         config.options().copyDefaults(true);
         saveConfig();
+
         this.db = new PlayerStatsDatabase(config.getString("database-server"),
                 config.getInt("database-port"), config.getString("database-name"),
                 config.getString("database-user"), config.getString("database-password"));
@@ -41,9 +42,10 @@ public final class KillCounter extends JavaPlugin {
                 PlayerStatsModel stats = mem.popStats(player);
                 db.editRecord(stats);
             }
+
             db.closeConnections();
         } catch (SQLException e) {
-            e.printStackTrace();
+            getServer().getLogger().warning("Could not save player data.");
         }
     }
 }
